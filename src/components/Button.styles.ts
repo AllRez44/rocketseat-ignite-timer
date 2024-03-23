@@ -22,7 +22,7 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
     margin: 8px;
 
     ${({ theme, variant }) => css`
-        background-color: ${variant ? buttonVariants[variant] : theme.primary};
+        background-color: ${variant ? buttonVariants[variant] : theme['green-500']};
         color: ${theme.white};
     `}
 `   
