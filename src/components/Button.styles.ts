@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'success';
 
 interface ButtonContainerProps {
-    variant: ButtonVariant;
+    variant?: ButtonVariant;
 }
 
 const buttonVariants = {
@@ -12,14 +12,17 @@ const buttonVariants = {
     secondary: 'orange',
     danger: 'red',
     success: 'gress'
-
 }
 
 export const ButtonContainer = styled.button<ButtonContainerProps>`
-    .button {
-        width: 120px;
-        height: 40px;
-    }
+    width: 120px;
+    height: 40px;
+    border-radius: 4px;
+    border: 0;
+    margin: 8px;
 
-    ${({ variant }) => (css`background-color: ${buttonVariants[variant]}`)}
+    ${({ theme, variant }) => css`
+        background-color: ${variant ? buttonVariants[variant] : theme.primary};
+        color: ${theme.white};
+    `}
 `   

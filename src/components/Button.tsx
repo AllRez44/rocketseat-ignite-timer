@@ -4,10 +4,10 @@ interface ButtonProps {
     variant?: ButtonVariant;
 }
 
-export function Button({ variant = 'primary' }: ButtonProps) {
+export function Button({ variant }: ButtonProps) {
     return (
         <ButtonContainer variant={variant}>
-            Click me, dummy!
+            Click me!
         </ButtonContainer>
     )
 }
