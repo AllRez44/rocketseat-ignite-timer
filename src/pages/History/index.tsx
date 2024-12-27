@@ -1,4 +1,4 @@
-import { HistoryContainer, HistoryList } from './styles'
+import { HistoryContainer, HistoryList, Status } from './styles'
 
 export function History() {
   return (
@@ -18,37 +18,49 @@ export function History() {
               <td>Tarefa 1</td>
               <td>20 minutos</td>
               <td>Há cerca de 2 meses</td>
-              <td>Concluído</td>
+              <td>
+                <Status variant="success">Concluído</Status>
+              </td>
             </tr>
             <tr>
               <td>Tarefa 2</td>
               <td>10 minutos</td>
               <td>Há cerca de 1 mês</td>
-              <td>Em Andamento</td>
+              <td>
+                <Status variant="warning">Em Andamento</Status>
+              </td>
             </tr>
             <tr>
               <td>Tarefa 1</td>
               <td>20 minutos</td>
               <td>Há cerca de 2 meses</td>
-              <td>Concluído</td>
+              <td>
+                <Status variant="success">Concluído</Status>
+              </td>
             </tr>
             <tr>
               <td>Tarefa 2</td>
               <td>10 minutos</td>
               <td>Há cerca de 1 mês</td>
-              <td>Em Andamento</td>
+              <td>
+                <Status variant="warning">Em Andamento</Status>
+              </td>
             </tr>
             <tr>
               <td>Tarefa 1</td>
               <td>20 minutos</td>
               <td>Há cerca de 2 meses</td>
-              <td>Concluído</td>
+              <td>
+                <Status variant="success">Concluído</Status>
+              </td>
             </tr>
             <tr>
               <td>Tarefa 2</td>
               <td>10 minutos</td>
               <td>Há cerca de 1 mês</td>
-              <td>Em Andamento</td>
+              <td>
+                <Status variant="danger">Interrompido</Status>
+              </td>
             </tr>
           </tbody>
         </table>

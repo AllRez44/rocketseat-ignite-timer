@@ -73,3 +73,27 @@ export const HistoryList = styled.div`
     }
   }
 `
+
+enum StatusColors {
+  warning = 'yellow-500',
+  danger = 'red-500',
+  success = 'green-500',
+}
+
+interface StatusProps {
+  variant: keyof typeof StatusColors
+}
+
+export const Status = styled.span<StatusProps>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: ${(props) => props.theme[StatusColors[props.variant]]};
+  }
+`
