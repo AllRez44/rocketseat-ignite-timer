@@ -10,23 +10,38 @@ import {
 } from './styles'
 import { useForm } from 'react-hook-form'
 import { isCycle } from '../../types/cycle'
+import * as zod from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect } from 'react'
+
+const cycleValidationSchema = zod.object({
+  title: zod.string().min(1, 'Informe a tarefa'),
+  minutes: zod.number().min(5).max(60),
+})
 
 export function Home() {
-  const { register, handleSubmit, watch } = useForm()
+  const { register, handleSubmit, watch, formState } = useForm({
+    resolver: zodResolver(cycleValidationSchema),
+  })
   const task = watch('title')
   const minutes = watch('minutes')
   const isSubmittable = task && minutes
+  const formErrors = formState.errors
 
   const validateCycle = (data: unknown) => {
     if (!data) throw new Error('No data provided')
     if (!isCycle(data)) throw new Error('Invalid data')
     if (!data.title && !data.minutes) throw new Error('Empty data')
     if (!data.title || !data.minutes) throw new Error('Missing data')
+    return data
   }
+
+  useEffect(() => console.error(formErrors), [formErrors])
 
   const handleCreateNewCycle = (data: unknown): void => {
     try {
-      validateCycle(data)
+      const cycle = validateCycle(data)
+      console.log(cycle)
     } catch (error) {
       console.error(error)
       return
@@ -60,7 +75,7 @@ export function Home() {
             placeholder="00"
             step={5}
             min={0}
-            max={100}
+            // max={100}
             {...register('minutes', { valueAsNumber: true })}
           />
           <span>minutos.</span>
