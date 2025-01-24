@@ -9,39 +9,37 @@ import {
   MinutesAmountInput,
 } from './styles'
 import { useForm } from 'react-hook-form'
-import { isCycle } from '../../types/cycle'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 
 const cycleValidationSchema = zod.object({
-  title: zod.string().min(1, 'Informe a tarefa'),
-  minutes: zod.number().min(5).max(60),
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutes: zod
+    .number()
+    .min(5, 'O ciclo precisar ser de no mínimo 5 minutos')
+    .max(60, 'O ciclo precisar ser de no máximo 60 minutos'),
 })
 
+type Cycle = zod.infer<typeof cycleValidationSchema>
+
 export function Home() {
-  const { register, handleSubmit, watch, formState } = useForm({
+  const { register, handleSubmit, watch, formState } = useForm<Cycle>({
     resolver: zodResolver(cycleValidationSchema),
+    defaultValues: {
+      task: '',
+      minutes: 0,
+    }
   })
-  const task = watch('title')
+  const task = watch('task')
   const minutes = watch('minutes')
   const isSubmittable = task && minutes
   const formErrors = formState.errors
-
-  const validateCycle = (data: unknown) => {
-    if (!data) throw new Error('No data provided')
-    if (!isCycle(data)) throw new Error('Invalid data')
-    if (!data.title && !data.minutes) throw new Error('Empty data')
-    if (!data.title || !data.minutes) throw new Error('Missing data')
-    return data
-  }
-
   useEffect(() => console.error(formErrors), [formErrors])
 
-  const handleCreateNewCycle = (data: unknown): void => {
+  const handleCreateNewCycle = (data: Cycle): void => {
     try {
-      const cycle = validateCycle(data)
-      console.log(cycle)
+      console.log(data)
     } catch (error) {
       console.error(error)
       return
@@ -58,7 +56,7 @@ export function Home() {
             id="taskTitle"
             list="taskSuggestions"
             placeholder="Dê um nome para sua tarefa"
-            {...register('title')}
+            {...register('task')}
           />
 
           <datalist id="taskSuggestions">
