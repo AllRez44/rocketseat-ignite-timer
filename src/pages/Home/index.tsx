@@ -38,12 +38,6 @@ export function Home() {
   useEffect(() => console.error(formErrors), [formErrors])
 
   const handleCreateNewCycle = (data: Cycle): void => {
-    try {
-      console.log(data)
-    } catch (error) {
-      console.error(error)
-      return
-    }
     console.log(data)
   }
   return (
