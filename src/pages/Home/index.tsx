@@ -37,6 +37,7 @@ interface Cycle extends CycleFormData {
 
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([])
+  const [activeCycleId, setActiveCycleId] = useState<string>()
   const { register, handleSubmit, watch, formState, reset } = useForm<CycleFormData>({
     resolver: zodResolver(cycleValidationSchema),
     defaultValues: {
@@ -51,16 +52,18 @@ export function Home() {
   useEffect(() => console.error(formErrors), [formErrors])
 
   const handleCreateNewCycle = (data: CycleFormData): void => {
-    const cycle: Cycle = {
+    console.group('Cycle Submit')
+    const newCycle: Cycle = {
       ...data,
       id: new Date().getTime().toString(),
       status: CycleStatus.ONGOING,
       createdAt: new Date(),
     }
-    console.group('Cycle Submit')
-    console.log(cycle)
+    console.log(newCycle)
+    setCycles((prev) => [...prev, newCycle])
+    setActiveCycleId(newCycle.id)
+    reset()                                                                                                               
     console.groupEnd()
-    reset()
   }
   return (
     <HomeContainer>
