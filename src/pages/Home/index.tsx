@@ -11,7 +11,7 @@ import {
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const cycleValidationSchema = zod.object({
   task: zod.string().min(1, 'Informe a tarefa'),
@@ -21,10 +21,23 @@ const cycleValidationSchema = zod.object({
     .max(60, 'O ciclo precisar ser de no máximo 60 minutos'),
 })
 
-type Cycle = zod.infer<typeof cycleValidationSchema>
+type CycleFormData = zod.infer<typeof cycleValidationSchema>
+
+enum CycleStatus {
+  ONGOING = 'Em andamento',
+  DONE = 'Concluído',
+  EXITED = 'Interrompido',
+}
+
+interface Cycle extends CycleFormData {
+  id: string;
+  status: CycleStatus;
+  createdAt: Date;
+}
 
 export function Home() {
-  const { register, handleSubmit, watch, formState } = useForm<Cycle>({
+  const [cycles, setCycles] = useState<Cycle[]>([])
+  const { register, handleSubmit, watch, formState, reset } = useForm<CycleFormData>({
     resolver: zodResolver(cycleValidationSchema),
     defaultValues: {
       task: '',
@@ -37,8 +50,17 @@ export function Home() {
   const formErrors = formState.errors
   useEffect(() => console.error(formErrors), [formErrors])
 
-  const handleCreateNewCycle = (data: Cycle): void => {
-    console.log(data)
+  const handleCreateNewCycle = (data: CycleFormData): void => {
+    const cycle: Cycle = {
+      ...data,
+      id: new Date().getTime().toString(),
+      status: CycleStatus.ONGOING,
+      createdAt: new Date(),
+    }
+    console.group('Cycle Submit')
+    console.log(cycle)
+    console.groupEnd()
+    reset()
   }
   return (
     <HomeContainer>
